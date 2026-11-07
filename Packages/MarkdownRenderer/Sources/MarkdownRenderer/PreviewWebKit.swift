@@ -38,8 +38,15 @@ private final class ResourceSchemeHandler: NSObject, WKURLSchemeHandler {
     func webView(_ webView: WKWebView, stop task: WKURLSchemeTask) {}
 }
 
+/// Handles messages from page scripts: `{copy: text}` puts text on the pasteboard (the
+/// async clipboard API isn't available to pages loaded with loadHTMLString); anything else is logged.
 private final class MessageLogger: NSObject, WKScriptMessageHandler {
     func userContentController(_ controller: WKUserContentController, didReceive message: WKScriptMessage) {
+        if let body = message.body as? [String: Any], let text = body["copy"] as? String {
+            NSPasteboard.general.clearContents()
+            NSPasteboard.general.setString(text, forType: .string)
+            return
+        }
         PreviewWebKit.logger.debug("\(String(describing: message.body), privacy: .public)")
     }
 }

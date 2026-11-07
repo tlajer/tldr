@@ -4,17 +4,28 @@ import MarkdownRenderer
 
 struct DocumentView: View {
     @State private var viewer: Viewer
+    @AppStorage("showPathBar") private var showPathBar = true
 
     init(initialText: String, fileURL: URL?) {
         _viewer = State(initialValue: Viewer(text: initialText, fileURL: fileURL))
     }
 
     var body: some View {
-        MarkdownWebView(viewer: viewer)
-            .ignoresSafeArea(.container, edges: .top)
+        VStack(spacing: 0) {
+            if showPathBar, let location = viewer.location {
+                PathBar(location: location)
+                Divider()
+            }
+            MarkdownWebView(viewer: viewer)
+        }
+            .ignoresSafeArea(.container, edges: showPathBar && viewer.location != nil ? [] : .top)
             .focusedSceneValue(\.viewer, viewer)
             .onAppear { viewer.startWatching() }
             .onDisappear { viewer.stopWatching() }
+            // Pick up branch switches made in a terminal while the app was in the background.
+            .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+                viewer.refreshLocation()
+            }
     }
 }
 
@@ -22,6 +33,7 @@ struct DocumentView: View {
 @Observable
 final class Viewer {
     private(set) var html: String
+    private(set) var location: FileLocation?
     private(set) var zoom: Double = UserDefaults.standard.object(forKey: "zoom") as? Double ?? 1
 
     let fileURL: URL?
@@ -31,11 +43,18 @@ final class Viewer {
     init(text: String, fileURL: URL?) {
         self.fileURL = fileURL
         self.html = Viewer.render(text, fileURL: fileURL)
+        self.location = fileURL.map(FileLocation.init)
+    }
+
+    func refreshLocation() {
+        let newLocation = fileURL.map(FileLocation.init)
+        if newLocation != location { location = newLocation }
     }
 
     static func render(_ text: String, fileURL: URL?) -> String {
-        MarkdownRenderer.renderPage(
-            markdown: text,
+        DocumentRenderer.renderPage(
+            text: text,
+            kind: DocumentKind(fileURL: fileURL),
             title: fileURL?.lastPathComponent ?? "Markdown",
             baseURL: fileURL?.deletingLastPathComponent()
         )
@@ -54,6 +73,7 @@ final class Viewer {
         guard let fileURL, let data = try? Data(contentsOf: fileURL) else { return }
         let newHTML = Viewer.render(MarkdownFile.decode(data), fileURL: fileURL)
         if newHTML != html { html = newHTML }
+        refreshLocation()
     }
 
     func setZoom(_ value: Double) {

@@ -20,11 +20,15 @@ public enum MarkdownRenderer {
         }
         let rendered = render(markdown: body, baseURL: baseURL, inlineImages: inlineImages)
         html += rendered.html
-        let scripts = rendered.hasMermaid
-            ? ["mermaid.min.js", "mermaid-init.js"]
-                .map { "<script src=\"\(PreviewWebKit.resourceURL($0))\"></script>" }
-                .joined(separator: "\n")
-            : ""
+        let scripts = rendered.hasMermaid ? ["mermaid.min.js", "mermaid-init.js"] : []
+        return page(title: title, bodyClass: nil, content: "<article class=\"markdown-body\">\n\(html)\n</article>", scripts: scripts)
+    }
+
+    /// The HTML shell shared by every kind of document. `scripts` are bundled resources.
+    static func page(title: String, bodyClass: String?, content: String, scripts: [String]) -> String {
+        let scriptTags = scripts
+            .map { "<script src=\"\(PreviewWebKit.resourceURL($0))\"></script>" }
+            .joined(separator: "\n")
         return """
         <!DOCTYPE html>
         <html>
@@ -36,11 +40,9 @@ public enum MarkdownRenderer {
         <title>\(escape(title))</title>
         <style>\(Stylesheet.css)</style>
         </head>
-        <body>
-        <article class="markdown-body">
-        \(html)
-        </article>
-        \(scripts)
+        <body\(bodyClass.map { " class=\"\($0)\"" } ?? "")>
+        \(content)
+        \(scriptTags)
         </body>
         </html>
         """

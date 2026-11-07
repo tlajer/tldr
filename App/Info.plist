@@ -20,6 +20,32 @@
 				<string>net.daringfireball.markdown</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>JSON Document</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.json</string>
+				<string>public.ndjson</string>
+				<string>io.github.tlajer.tldr.jsonl</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>XML Document</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.xml</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
@@ -69,6 +95,71 @@
 				<key>public.mime-type</key>
 				<array>
 					<string>text/markdown</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.json</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>JSON with Comments</string>
+			<key>UTTypeIdentifier</key>
+			<string>io.github.tlajer.tldr.jsonc</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>jsonc</string>
+					<string>json5</string>
+					<string>webmanifest</string>
+					<string>har</string>
+					<string>ipynb</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.plain-text</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>JSON Lines</string>
+			<key>UTTypeIdentifier</key>
+			<string>io.github.tlajer.tldr.jsonl</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>jsonl</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.xml</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>XML Document</string>
+			<key>UTTypeIdentifier</key>
+			<string>io.github.tlajer.tldr.xml-source</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>xsd</string>
+					<string>xsl</string>
+					<string>xslt</string>
+					<string>xaml</string>
+					<string>atom</string>
+					<string>opml</string>
+					<string>kml</string>
+					<string>csproj</string>
+					<string>fsproj</string>
+					<string>vbproj</string>
+					<string>resx</string>
 				</array>
 			</dict>
 		</dict>

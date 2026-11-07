@@ -14,7 +14,7 @@ let package = Package(
         .target(
             name: "MarkdownRenderer",
             dependencies: [.product(name: "Markdown", package: "swift-markdown")],
-            resources: [.copy("Resources/mermaid.min.js"), .copy("Resources/mermaid-init.js")]
+            resources: [.copy("Resources/mermaid.min.js"), .copy("Resources/mermaid-init.js"), .copy("Resources/data-view.js")]
         ),
         .testTarget(name: "MarkdownRendererTests", dependencies: ["MarkdownRenderer"]),
     ]

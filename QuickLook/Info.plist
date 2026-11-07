@@ -31,6 +31,10 @@
 			<key>QLSupportedContentTypes</key>
 			<array>
 				<string>net.daringfireball.markdown</string>
+				<string>public.json</string>
+				<string>public.ndjson</string>
+				<string>io.github.tlajer.tldr.jsonl</string>
+				<string>public.xml</string>
 			</array>
 			<key>QLSupportsSearchableItems</key>
 			<false/>

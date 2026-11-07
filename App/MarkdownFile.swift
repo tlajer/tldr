@@ -3,10 +3,14 @@ import UniformTypeIdentifiers
 
 extension UTType {
     static let markdown = UTType(importedAs: "net.daringfireball.markdown", conformingTo: .plainText)
+    static let jsonc = UTType(importedAs: "io.github.tlajer.tldr.jsonc", conformingTo: .json)
+    static let jsonLines = UTType(importedAs: "io.github.tlajer.tldr.jsonl", conformingTo: .plainText)
+    static let ndjson = UTType(importedAs: "public.ndjson", conformingTo: .plainText)
+    static let xmlSource = UTType(importedAs: "io.github.tlajer.tldr.xml-source", conformingTo: .xml)
 }
 
 struct MarkdownFile: FileDocument {
-    static let readableContentTypes: [UTType] = [.markdown]
+    static let readableContentTypes: [UTType] = [.markdown, .json, .jsonc, .jsonLines, .ndjson, .xml, .xmlSource]
 
     var text: String
 

@@ -21,8 +21,9 @@ final class PreviewViewController: NSViewController, QLPreviewingController, WKN
     func preparePreviewOfFile(at url: URL) async throws {
         let data = try Data(contentsOf: url)
         let text = String(data: data, encoding: .utf8) ?? String(data: data, encoding: .isoLatin1) ?? ""
-        let html = MarkdownRenderer.renderPage(
-            markdown: text,
+        let html = DocumentRenderer.renderPage(
+            text: text,
+            kind: DocumentKind(fileURL: url),
             title: url.lastPathComponent,
             baseURL: url.deletingLastPathComponent()
         )

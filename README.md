@@ -1,15 +1,23 @@
 # TL;DR
 
-Native macOS markdown viewer (`TLDR.app`): a standalone app for `.md` files plus a Quick Look extension
+Native macOS viewer (`TLDR.app`) for markdown, JSON and XML: a standalone app plus a Quick Look extension
 (select a file in Finder and press space).
 
 - GitHub-flavoured markdown via Apple's [swift-markdown](https://github.com/swiftlang/swift-markdown)
   (cmark-gfm): tables, task lists, strikethrough, autolinks, GitHub alerts (`> [!NOTE]`)
 - [Mermaid](https://mermaid.js.org) diagrams in ```` ```mermaid ```` blocks (bundled, works offline)
 - Light/dark mode follows the system, diagrams included
+- JSON (also with comments/trailing commas, and JSON Lines) and XML as a foldable tree: click a key to copy
+  its path (`.scripts["test-all"]`, `/project/dependencies/dependency[1]/@scope`), click a value to copy it,
+  ⌥-click ▸ to fold a subtree, `E`/`C`/`1`–`9` to expand/collapse/fold to a level, `R` for the source with
+  line numbers. Parse errors show the line and column. JSON/XML are registered as "Alternate", so TL;DR shows
+  up in Open With without taking over the default app.
 - Relative images are inlined, YAML front matter is folded away
 - App: live reload when the file changes on disk, zoom (⌘+ / ⌘- / ⌘0), print (⌘P),
   links to other `.md` files open in the app, web links open in the browser
+- App: path bar (⌥⌘P) with the git branch. Click a folder to open it in Finder, ⌘-click for the terminal,
+  ⌥-click for the editor, ⇧-click to copy the path, drag it into a terminal, or right-click for more.
+  The Go menu has shortcuts for copying paths and opening the file on GitHub/GitLab.
 
 ## Build
 
@@ -17,7 +25,7 @@ Requires Xcode and [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew inst
 
 ```sh
 make install   # build Release, copy to /Applications, register Quick Look extension
-make default   # make it the default app for .md files
+make default   # make it the default app for markdown, JSON and XML (also in Settings, ⌘,)
 make test      # renderer unit tests
 ```
 

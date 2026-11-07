@@ -71,7 +71,7 @@ struct MarkdownWebView: NSViewRepresentable {
                 return .cancel
             }
 
-            if url.isFileURL, ["md", "markdown", "mdown", "mkd", "mkdn", "mdwn"].contains(url.pathExtension.lowercased()) {
+            if url.isFileURL, DocumentKind(fileExtension: url.pathExtension) != nil {
                 NSDocumentController.shared.openDocument(withContentsOf: url, display: true) { _, _, _ in }
             } else {
                 NSWorkspace.shared.open(url)
